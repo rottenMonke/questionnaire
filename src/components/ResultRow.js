@@ -24,12 +24,11 @@ const ResultRow = ({element}) => {
             let finalString = 'You answered ';    
             if(element.type === 'boolean' && typeof element.correct_answer === "string" ) {
                 finalString+= 'that this is '+ myAnswer;
-                finalString+=element.isAnswerCorrect ? ' and this is a correct answer' : ' but the correct answer is '+ correctAnswer;
             }else {
-                finalString+= ' - '+myAnswer;
-                finalString+= element.isAnswerCorrect ? ' and this is a correct answer' : ' but the correct answer is - '+ correctAnswer;
+                finalString+= myAnswer;
             }
-            return finalString;
+            finalString+= element.isAnswerCorrect ? ' and this is a correct answer' : ' but the correct answer is '+ correctAnswer;
+            return decodeHTML(finalString);
         }
 
         let myAnswer = formulateMyAnswer(element.myAnswer),
