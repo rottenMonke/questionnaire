@@ -37,12 +37,10 @@ const ResultRow = ({element}) => {
             finalString = formulateFinalString(element, myAnswer, correctAnswer);
  
     return (
-        <div>
-            <div>
-                <h4>Difficulty : {element.difficulty}</h4>
-                <h2>{decodeHTML(element.question)}</h2>
-                <h3>{finalString}</h3>  
-            </div>
+        <div className="result__item">
+                <div className="result__item-difficulty">Difficulty : {element.difficulty}</div>
+                <div className="result__item-question">{decodeHTML(element.question)}</div>
+                <div data-isCorrect={element.isAnswerCorrect} className="result__item-answer">{finalString}</div>  
         </div>
     );
 }

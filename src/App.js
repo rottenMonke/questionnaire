@@ -6,10 +6,10 @@ import decodeHTML from './utils/decodeHTML';
 
 class App extends Component {
 
-  
-  constructor(props) {
+
+  constructor (props) {
     super(props);
-    
+
     this.state = {
       shouldStart: false
     }
@@ -26,8 +26,8 @@ class App extends Component {
   }
 
   componentDidMount() {
-    
-    getQuestions("https://opentdb.com/api.php?amount=5").then((response) => {
+
+    getQuestions("https://opentdb.com/api.php?amount=3").then((response) => {
 
       this.data.questions = response.results;
       this.data.amountOfQuestions = response.results.length;
@@ -48,7 +48,7 @@ class App extends Component {
         correctAnswer = currentQuestion.correct_answer,
         isAnswerCorrect = this.checkCorrectness(arrOfMyAnswers, correctAnswer);
 
-      
+
         currentQuestion.myAnswer = arrOfMyAnswers;
         currentQuestion.isAnswerCorrect = isAnswerCorrect;
         currentQuestion.numericDifficulty = this.transformDifficulty(currentQuestion.difficulty);
@@ -56,13 +56,13 @@ class App extends Component {
         if(isAnswerCorrect) {
           this.data.amountOfCorrectAnswers++;
         }
-        
+
         this.setState((prevState)=>{
           return {currentQuestionId: prevState.currentQuestionId + 1}
         });
-    
+
   }
-  
+
 
   checkCorrectness(arrOfMyAnswers, correctAnswer) {
     let arrOfCorrectAnswers = [];
@@ -74,7 +74,7 @@ class App extends Component {
         }else {
           arrOfCorrectAnswers.push(decodeHTML(correctAnswer));
         }
-        
+
         return arrOfMyAnswers.sort().join('') === arrOfCorrectAnswers.sort().join('');
   }
 
@@ -96,17 +96,14 @@ class App extends Component {
 
 
   render() {
-
-    
       if (this.state.shouldStart && (this.state.currentQuestionId < this.data.amountOfQuestions)) {
-        let currentQuestionIndex = this.state.currentQuestionId;    
-        return <Question questionData={this.data.questions[currentQuestionIndex]} passResult={this.handleResponse}/>;
+        return <Question questionData={this.data.questions[this.state.currentQuestionId]} passResult={this.handleResponse}/>;
       }
       else if(this.state.shouldStart){
         return <Result result={this.data} />;
       }
        else {
-        return "Wait PLS!!";
+        return "Loading";
       }
   }
 }

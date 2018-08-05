@@ -44,9 +44,8 @@ class Result extends Component {
             
             return (
             <div>
-                <h1>This is it!</h1>
-                <h1> You answered correctly {this.props.result.amountOfCorrectAnswers} out of {this.props.result.amountOfQuestions} questions</h1>
-                <button onClick={this.sortByDifficulty}>Sort by difficulty?</button>
+                <div className="result__header">This is it! You answered correctly {this.props.result.amountOfCorrectAnswers} out of {this.props.result.amountOfQuestions} questions</div>
+                <button className="result__filter" onClick={this.sortByDifficulty}>Sort by difficulty?</button>
                 {dataToRender}
             </div>
         );

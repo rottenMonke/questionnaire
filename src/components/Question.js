@@ -35,22 +35,22 @@ const Question = ({questionData, passResult}) => {
     }
 
     return (
-        <div>
-            <form action="" onSubmit={handleSubmit}>
-                <h1>{question}</h1>
-                {questions.map((element,index) => {
+        <div className="question__body">
+            <form className="question__form" action="" onSubmit={handleSubmit}>
+                <div className="question__header">{question}</div>
+                {questions.map((option,index) => {
                     let inputType = questionData.type === 'multiple' ? 'checkbox' : 'radio',
                         answerName = inputType === 'radio'? 'answer': 'answer'+index,
                         answerNameId = answerName+'id', 
-                        answer = decodeHTML(element);
+                        answer = decodeHTML(option);
                     return (
-                        <label id={answerNameId}>
+                        <label className="question__option" id={answerNameId}>
                             {answer}
                             <input id={answerNameId} type={inputType} name={answerName} value={answer}></input>
                         </label>
                     );
                 })}
-                <input type="submit" value="Submit" />
+                <input className="question__submit" type="submit" value="Submit" />
             </form>
         </div>
     );
