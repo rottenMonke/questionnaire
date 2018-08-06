@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import OneOption from './OneOption';
+import MultipleOptions from './MultipleOptions';
 
 const Question = ({ questionData, passResult }) => {
-  const answers = questionData.allAnswers;
 
-  const question = questionData.question;
 
   const uncheckInputs = (form) => {
     let inputs = form.querySelectorAll('input');
@@ -38,30 +38,20 @@ const Question = ({ questionData, passResult }) => {
   };
 
 
+  const determineTypeOfAnswersToDraw = () => {
+
+    if(questionData.type === 'multiple'){
+      return <MultipleOptions data={questionData.allAnswers} />
+    }
+    return  <OneOption data={questionData.allAnswers} />
+  }
+
   return (
     <div className='question__body'>
       <form className='question__form' action=''
         onSubmit={handleSubmit}>
-        <div className='question__header'>{question}</div>
-        {answers.map((option, index) => {
-          let inputType = questionData.type === 'multiple' ? 'checkbox' : 'radio';
-
-
-          let answerName = inputType === 'radio' ? 'answer' : 'answer' + index;
-
-
-          let answerNameId = answerName + 'id';
-
-
-          let answer = option;
-          return (
-            <label className='question__option' id={answerNameId} key={answerNameId+'key'+index}>
-              {answer}
-              <input id={answerNameId} type={inputType}
-                name={answerName} value={answer} />
-            </label>
-          );
-        })}
+        <div className='question__header'>{questionData.question}</div>
+        {determineTypeOfAnswersToDraw()}
         <input className='question__submit' type='submit'
           value='Submit' />
       </form>
