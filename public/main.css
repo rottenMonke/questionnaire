@@ -4,14 +4,16 @@
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
 }
-.question__body {
+.container {
   width: 280px;
-  border: 1px solid #315efb;
   position: absolute;
   top: 50%;
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
+}
+.question__body {
+  border: 1px solid #315efb;
 }
 .question__header {
   font-size: 25px;
@@ -75,4 +77,8 @@
 }
 .result__item-answer[data-isCorrect='false'] {
   color: #ff564e;
+}
+.counter {
+  margin-top: 20px;
+  text-align: center;
 }

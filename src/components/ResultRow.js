@@ -1,47 +1,51 @@
 import React from 'react';
-import decodeHTML from '../utils/decodeHTML';
+import PropTypes from 'prop-types';
+
+const ResultRow = ({ question }) => {
+  const formulateCorrectAnswer = (answer) => {
+    let result;
+    if (answer.length > 1) {
+      result = answer.join(', ');
+    } else {
+      result = answer[0];
+    }
+    return result;
+  };
+
+  const formulateMyAnswer = (answer) => {
+    return answer.length > 1  ? answer.join(', ') : answer[0];
+  };
+
+  const formulateFinalString = (data, myAnswer, correctAnswer) => {
+    let finalString = 'You answered ';
+    if (data.type === 'boolean' &&  data.correct_answer.length === 1) {
+      finalString += 'that this is ' + myAnswer;
+    } else {
+      finalString += myAnswer;
+    }
+    finalString += data.isAnswerCorrect ? ' and this is a correct answer' : ' but the correct answer is ' + correctAnswer;
+    return finalString;
+  };
+
+  let myAnswer = formulateMyAnswer(question.myAnswer);
 
 
-const ResultRow = ({element}) => {
+  let correctAnswer = formulateCorrectAnswer(question.correct_answer);
 
-        const formulateCorrectAnswer = (answer) => {
-            let result;
-            if(typeof answer === 'string') {
-                result = answer;
-            }else if(answer.length > 1) {
-                result = answer.join(', ');    
-            }else {
-                result = answer[0];
-            }
-            return result;
-        }
 
-        const formulateMyAnswer = (answer) => {
-            return answer.length > 1  ? answer.join(', ') : answer[0];
-        }
+  let finalString = formulateFinalString(question, myAnswer, correctAnswer);
 
-        const formulateFinalString = (element, myAnswer, correctAnswer) => {
-            let finalString = 'You answered ';    
-            if(element.type === 'boolean' && typeof element.correct_answer === "string" ) {
-                finalString+= 'that this is '+ myAnswer;
-            }else {
-                finalString+= myAnswer;
-            }
-            finalString+= element.isAnswerCorrect ? ' and this is a correct answer' : ' but the correct answer is '+ correctAnswer;
-            return decodeHTML(finalString);
-        }
+  return (
+    <div className='result__item'>
+      <div className='result__item-difficulty'>Difficulty : {question.difficulty}</div>
+      <div className='result__item-question'>{question.question}</div>
+      <div data-isCorrect={question.isAnswerCorrect} className='result__item-answer'>{finalString}</div>
+    </div>
+  );
+};
 
-        let myAnswer = formulateMyAnswer(element.myAnswer),
-            correctAnswer = formulateCorrectAnswer(element.correct_answer),
-            finalString = formulateFinalString(element, myAnswer, correctAnswer);
- 
-    return (
-        <div className="result__item">
-                <div className="result__item-difficulty">Difficulty : {element.difficulty}</div>
-                <div className="result__item-question">{decodeHTML(element.question)}</div>
-                <div data-isCorrect={element.isAnswerCorrect} className="result__item-answer">{finalString}</div>  
-        </div>
-    );
-}
+ResultRow.propTypes = {
+  question: PropTypes.object
+};
 
 export default ResultRow;

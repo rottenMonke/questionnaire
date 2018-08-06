@@ -1,110 +1,85 @@
 import React, {  Component } from 'react';
-import getQuestions from './utils/makeRequest';
+import service from './service/service.js';
 import Question from './components/Question';
+import Counter from './components/Counter';
 import Result from './components/Result';
-import decodeHTML from './utils/decodeHTML';
+import utils from './utils/utils';
 
 class App extends Component {
-
-
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.state = {
-      shouldStart: false
-    }
+      isDataLoaded: false,
+      currentQuestionId: 0
+    };
 
     this.data = {
       questions: [],
-      amountOfQuestions : 0,
+      amountOfQuestions: 0,
       amountOfCorrectAnswers: 0
-    }
+    };
 
     this.handleResponse = this.handleResponse.bind(this);
     this.checkCorrectness = this.checkCorrectness.bind(this);
-    this.transformDifficulty = this.transformDifficulty.bind(this);
   }
 
   componentDidMount() {
-
-    getQuestions("https://opentdb.com/api.php?amount=3").then((response) => {
-
-      this.data.questions = response.results;
-      this.data.amountOfQuestions = response.results.length;
+    service.getQuestions('https://opentdb.com/api.php?amount=3').then((response) => {
+      this.data.questions = utils.formatData(response);
+      this.data.amountOfQuestions = this.data.questions.length;
 
       this.setState({
-        currentQuestionId: 0,
-        shouldStart: true
+        isDataLoaded: true
       });
-
     });
-
   }
 
 
   handleResponse(arrOfMyAnswers) {
-    let currentQuestionId = this.state.currentQuestionId,
-        currentQuestion = this.data.questions[currentQuestionId],
-        correctAnswer = currentQuestion.correct_answer,
-        isAnswerCorrect = this.checkCorrectness(arrOfMyAnswers, correctAnswer);
+    let currentQuestionId = this.state.currentQuestionId;
 
 
-        currentQuestion.myAnswer = arrOfMyAnswers;
-        currentQuestion.isAnswerCorrect = isAnswerCorrect;
-        currentQuestion.numericDifficulty = this.transformDifficulty(currentQuestion.difficulty);
-
-        if(isAnswerCorrect) {
-          this.data.amountOfCorrectAnswers++;
-        }
-
-        this.setState((prevState)=>{
-          return {currentQuestionId: prevState.currentQuestionId + 1}
-        });
-
-  }
+    let currentQuestion = this.data.questions[currentQuestionId];
 
 
-  checkCorrectness(arrOfMyAnswers, correctAnswer) {
-    let arrOfCorrectAnswers = [];
+    let correctAnswers = currentQuestion.correct_answer;
 
-        if(Array.isArray(correctAnswer)){
-          arrOfCorrectAnswers = correctAnswer.map((item) => {
-            return decodeHTML(item);
-          });
-        }else {
-          arrOfCorrectAnswers.push(decodeHTML(correctAnswer));
-        }
 
-        return arrOfMyAnswers.sort().join('') === arrOfCorrectAnswers.sort().join('');
-  }
+    let isAnswerCorrect = this.checkCorrectness(arrOfMyAnswers, correctAnswers);
 
-  transformDifficulty (difficulty) {
-    switch (difficulty) {
-      case 'easy':
-        return 1;
-        break;
-      case 'medium':
-        return 2;
-        break;
-      case 'hard':
-        return 3;
-        break;
-      default:
-        return difficulty;
+
+    currentQuestion.myAnswer = arrOfMyAnswers;
+    currentQuestion.isAnswerCorrect = isAnswerCorrect;
+
+    if (isAnswerCorrect) {
+      this.data.amountOfCorrectAnswers++;
     }
+
+    this.setState((prevState)=>{
+      return { currentQuestionId: prevState.currentQuestionId + 1 };
+    });
+  }
+
+
+  checkCorrectness(arrOfMyAnswers, correctAnswers) {
+    return arrOfMyAnswers.sort().join('') === correctAnswers.sort().join('');
   }
 
 
   render() {
-      if (this.state.shouldStart && (this.state.currentQuestionId < this.data.amountOfQuestions)) {
-        return <Question questionData={this.data.questions[this.state.currentQuestionId]} passResult={this.handleResponse}/>;
-      }
-      else if(this.state.shouldStart){
-        return <Result result={this.data} />;
-      }
-       else {
-        return "Loading";
-      }
+    if (this.state.isDataLoaded && (this.state.currentQuestionId < this.data.amountOfQuestions)) {
+      return (
+        <div className='container'>
+          <Question questionData={this.data.questions[this.state.currentQuestionId]} passResult={this.handleResponse}/>
+          <Counter currentQuestion={this.state.currentQuestionId + 1} totalAmountOfQuestions={this.data.amountOfQuestions}/>
+        </div>
+      );
+    } else if (this.state.isDataLoaded) {
+      return <Result result={this.data} />;
+    }
+
+    return 'Loading...';
   }
 }
 
