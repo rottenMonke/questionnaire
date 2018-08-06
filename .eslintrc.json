@@ -1,3 +1,0 @@
-{
-    "extends": ["eslint-config-rambler", "./node_modules/eslint-config-rambler/.eslintrc"]
-}
