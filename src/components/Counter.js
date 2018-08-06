@@ -10,8 +10,8 @@ const Counter = ({ currentQuestion, totalAmountOfQuestions }) => {
 };
 
 Counter.propTypes = {
-  currentQuestion: PropTypes.string,
-  totalAmountOfQuestions: PropTypes.string,
+  currentQuestion: PropTypes.number,
+  totalAmountOfQuestions: PropTypes.number,
 };
 
 export default Counter;

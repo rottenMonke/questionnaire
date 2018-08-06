@@ -39,7 +39,7 @@ const ResultRow = ({ question }) => {
     <div className='result__item'>
       <div className='result__item-difficulty'>Difficulty : {question.difficulty}</div>
       <div className='result__item-question'>{question.question}</div>
-      <div data-isCorrect={question.isAnswerCorrect} className='result__item-answer'>{finalString}</div>
+      <div data-is-correct={question.isAnswerCorrect} className='result__item-answer'>{finalString}</div>
     </div>
   );
 };

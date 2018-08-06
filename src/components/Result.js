@@ -37,8 +37,8 @@ class Result extends Component {
   }
 
   render() {
-    let dataToRender = this.questions.map((result) => {
-      return <ResultRow question={result} />;
+    let dataToRender = this.questions.map((result, index) => {
+      return <ResultRow key={"result"+index} question={result} />;
     });
 
 

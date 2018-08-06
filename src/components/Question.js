@@ -55,7 +55,7 @@ const Question = ({ questionData, passResult }) => {
 
           let answer = option;
           return (
-            <label className='question__option' id={answerNameId}>
+            <label className='question__option' id={answerNameId} key={answerNameId+'key'+index}>
               {answer}
               <input id={answerNameId} type={inputType}
                 name={answerName} value={answer} />

@@ -72,10 +72,10 @@
 .result__item-answer {
   margin-top: 16px;
 }
-.result__item-answer[data-isCorrect='true'] {
+.result__item-answer[data-is-correct='true'] {
   color: #28bc00;
 }
-.result__item-answer[data-isCorrect='false'] {
+.result__item-answer[data-is-correct='false'] {
   color: #ff564e;
 }
 .counter {
