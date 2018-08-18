@@ -1,18 +1,17 @@
 import React, {  Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import service from './service/service.js';
+import utils from './utils/utils';
+import store from './store';
+import actions from './actions';
 import Question from './components/Question';
 import Counter from './components/Counter';
 import Result from './components/Result';
-import utils from './utils/utils';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      isDataLoaded: false,
-      currentQuestionId: 0
-    };
+  constructor() {
+    super();
 
     this.data = {
       questions: [],
@@ -25,19 +24,17 @@ class App extends Component {
   }
 
   componentDidMount() {
-    service.getQuestions('https://opentdb.com/api.php?amount=3').then((response) => {
+    service.getQuestions().then((response) => {
       this.data.questions = utils.formatData(response);
       this.data.amountOfQuestions = this.data.questions.length;
 
-      this.setState({
-        isDataLoaded: true
-      });
+      store.dispatch(actions.dataLoaded());
     });
   }
 
 
   handleResponse(arrOfMyAnswers) {
-    let currentQuestionId = this.state.currentQuestionId;
+    let currentQuestionId = this.props.currentQuestionId;
 
 
     let currentQuestion = this.data.questions[currentQuestionId];
@@ -56,9 +53,7 @@ class App extends Component {
       this.data.amountOfCorrectAnswers++;
     }
 
-    this.setState((prevState)=>{
-      return { currentQuestionId: prevState.currentQuestionId + 1 };
-    });
+    store.dispatch(actions.nextQuestion(++currentQuestionId));
   }
 
 
@@ -68,14 +63,14 @@ class App extends Component {
 
 
   render() {
-    if (this.state.isDataLoaded && (this.state.currentQuestionId < this.data.amountOfQuestions)) {
+    if (this.props.isDataLoaded && (this.props.currentQuestionId < this.data.amountOfQuestions)) {
       return (
         <div className='container'>
-          <Question questionData={this.data.questions[this.state.currentQuestionId]} passResult={this.handleResponse}/>
-          <Counter currentQuestion={this.state.currentQuestionId + 1} totalAmountOfQuestions={this.data.amountOfQuestions}/>
+          <Question questionData={this.data.questions[this.props.currentQuestionId]} passResult={this.handleResponse}/>
+          <Counter currentQuestion={this.props.currentQuestionId + 1} totalAmountOfQuestions={this.data.amountOfQuestions}/>
         </div>
       );
-    } else if (this.state.isDataLoaded) {
+    } else if (this.props.isDataLoaded) {
       return <Result result={this.data} />;
     }
 
@@ -83,4 +78,15 @@ class App extends Component {
   }
 }
 
-export default App;
+
+App.propTypes = {
+  currentQuestionId: PropTypes.number,
+  isDataLoaded: PropTypes.bool,
+};
+
+const mapStateToProps = state => {
+  return { currentQuestionId: state.currentQuestionId,
+    isDataLoaded: state.isDataLoaded };
+};
+
+export default connect(mapStateToProps)(App);

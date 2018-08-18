@@ -4,8 +4,6 @@ import OneOption from './OneOption';
 import MultipleOptions from './MultipleOptions';
 
 const Question = ({ questionData, passResult }) => {
-
-
   const uncheckInputs = (form) => {
     let inputs = form.querySelectorAll('input');
     inputs.forEach((input) => {
@@ -37,21 +35,14 @@ const Question = ({ questionData, passResult }) => {
     uncheckInputs(form);
   };
 
-
-  const determineTypeOfAnswersToDraw = () => {
-
-    if(questionData.type === 'multiple'){
-      return <MultipleOptions data={questionData.allAnswers} />
-    }
-    return  <OneOption data={questionData.allAnswers} />
-  }
+  const question = questionData.type === 'multiple' ? <MultipleOptions data={questionData.allAnswers} /> : <OneOption data={questionData.allAnswers} />;
 
   return (
     <div className='question__body'>
       <form className='question__form' action=''
         onSubmit={handleSubmit}>
         <div className='question__header'>{questionData.question}</div>
-        {determineTypeOfAnswersToDraw()}
+        {question}
         <input className='question__submit' type='submit'
           value='Submit' />
       </form>

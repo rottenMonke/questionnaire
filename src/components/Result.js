@@ -37,8 +37,8 @@ class Result extends Component {
   }
 
   render() {
-    let dataToRender = this.questions.map((result, index) => {
-      return <ResultRow key={"result"+index} question={result} />;
+    let results = this.questions.map((result, index) => {
+      return <ResultRow key={'result' + index} question={result} />;
     });
 
 
@@ -46,7 +46,7 @@ class Result extends Component {
       <div>
         <div className='result__header'>This is it! You answered correctly {this.props.result.amountOfCorrectAnswers} out of {this.props.result.amountOfQuestions} questions</div>
         <button className='result__filter' onClick={this.sortByDifficulty}>Sort by difficulty?</button>
-        {dataToRender}
+        {results}
       </div>
     );
   }
