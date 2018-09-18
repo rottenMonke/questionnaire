@@ -40,10 +40,7 @@ export default {
       return this.getRidOfSpecialCharacters(answer);
     });
   },
-  formatData: function(string) {
-    let data = JSON.parse(string).results;
-
-
+  formatData: function(data) {
     data.forEach((element) => {
       this.addNumericDifficulty(element);
       this.transformCorrectAnswersToArray(element);

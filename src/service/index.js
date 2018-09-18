@@ -2,7 +2,7 @@ export default {
   getQuestions: function() {
     return new Promise((resolve, reject) =>{
       var xhr = new XMLHttpRequest();
-      xhr.open('GET', 'https://opentdb.com/api.php?amount=7', true);
+      xhr.open('GET', 'https://opentdb.com/api.php?amount=3', true);
 
       xhr.onload = function() {
         if (this.status >= 200 && this.status < 300) {

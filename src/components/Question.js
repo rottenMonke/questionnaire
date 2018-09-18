@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import OneOption from './OneOption';
 import MultipleOptions from './MultipleOptions';
 
-const Question = ({ questionData, passResult }) => {
+const Question = ({ questionData, handleResult }) => {
+  
   const uncheckInputs = (form) => {
     let inputs = form.querySelectorAll('input');
     inputs.forEach((input) => {
@@ -30,7 +31,7 @@ const Question = ({ questionData, passResult }) => {
       return;
     }
 
-    passResult(result);
+    handleResult(result);
 
     uncheckInputs(form);
   };

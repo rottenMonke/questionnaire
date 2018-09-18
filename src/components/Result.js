@@ -10,7 +10,7 @@ class Result extends Component {
     };
 
 
-    this.questions = this.props.result.questions;
+    this.questions = this.props.result;
     this.sortByDifficulty = this.sortByDifficulty.bind(this);
   }
 
@@ -52,8 +52,5 @@ class Result extends Component {
   }
 }
 
-Result.propTypes = {
-  result: PropTypes.object
-};
 
 export default Result;
