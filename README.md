@@ -1,6 +1,6 @@
 # questionnaire
 Simple questionnaire app
-
+It was a test task from Rambler
 
 How to run
 
